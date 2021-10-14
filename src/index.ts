@@ -105,13 +105,7 @@ const handlePullRequest = async (
     octokit: InstanceType<typeof GitHub>;
   }>,
 ): Promise<void> => {
-  if (!pullRequest.auto_merge) {
-    info(
-      `Pull request #${pullRequest.number} does not have auto-merge enabled`,
-    );
-    return;
-  }
-
+  
   if (pullRequest.base.sha === eventPayload.after) {
     info(`Pull request #${pullRequest.number} is already up to date`);
     return;
