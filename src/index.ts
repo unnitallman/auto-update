@@ -156,7 +156,7 @@ const run = async () => {
     // See https://docs.github.com/en/free-pro-team@latest/developers/webhooks-and-events/webhook-events-and-payloads#webhook-payload-object-34.
     const base = eventPayload.ref.slice("refs/heads/".length);
 
-    info(`Fetching pull requests based on "${base}"`);
+    info(`Fetching pull requests based on "${base}":`);
 
     const pullRequests = await octokit.paginate(
       "GET /repos/{owner}/{repo}/pulls",
