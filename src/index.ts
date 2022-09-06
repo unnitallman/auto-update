@@ -169,9 +169,9 @@ const run = async () => {
     );
 
     for (const pullRequest of pullRequests) {
-      console.log(label);
-      console.log(pullRequest.labels);
-      console.log(pullRequest.labels.some(({ name }) => name === label));
+      info(label);
+      info(pullRequest.labels);
+      info(pullRequest.labels.some(({ name }) => name === label));
       if (
         label !== undefined &&
         !pullRequest.labels.some(({ name }) => name === label)
