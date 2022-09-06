@@ -138,6 +138,7 @@ const handlePullRequest = async (
 const run = async () => {
   try {
     const token = getInput("github_token", { required: true });
+    const label = getInput("label") || "run-cypress-happy-path";
     const octokit = getOctokit(token);
 
     if (context.eventName !== "push") {
@@ -168,7 +169,12 @@ const run = async () => {
     );
 
     for (const pullRequest of pullRequests) {
-      await handlePullRequest(pullRequest, { eventPayload, octokit });
+      if (
+        label !== undefined &&
+        !pullRequest.labels.some(({ name }) => name === label)
+      ){
+        await handlePullRequest(pullRequest, { eventPayload, octokit });
+      }
     }
   } catch (error: unknown) {
     handleError(error, { handle: setFailed });
