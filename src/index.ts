@@ -138,7 +138,7 @@ const handlePullRequest = async (
 const run = async () => {
   try {
     const token = getInput("github_token", { required: true });
-    const label = getInput("label") || "run-cypress-happy-path";
+    const skip_label = getInput("skip_label") || "non-existent-label";
     const octokit = getOctokit(token);
 
     if (context.eventName !== "push") {
@@ -169,10 +169,7 @@ const run = async () => {
     );
 
     for (const pullRequest of pullRequests) {
-      if (
-        label !== undefined &&
-        !pullRequest.labels.some(({ name }) => name === label)
-      ){
+      if (!pullRequest.labels.some(({ name }) => name === skip_label)){
         await handlePullRequest(pullRequest, { eventPayload, octokit });
       }
     }
