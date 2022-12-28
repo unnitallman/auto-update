@@ -1,6 +1,7 @@
 import {
   error as logError,
   getInput,
+  getMultilineInput,
   info,
   group,
   setFailed,
@@ -138,7 +139,7 @@ const handlePullRequest = async (
 const run = async () => {
   try {
     const token = getInput("github_token", { required: true });
-    const skip_label = getInput("skip_label") || "non-existent-label";
+    const skip_labels = getMultilineInput("skip_labels");
     const octokit = getOctokit(token);
 
     if (context.eventName !== "push") {
@@ -169,7 +170,7 @@ const run = async () => {
     );
 
     for (const pullRequest of pullRequests) {
-      if (!pullRequest.labels.some(({ name }) => name === skip_label)){
+      if (skip_labels.length > 0 && !pullRequest.labels.some(({ name }) => skip_labels.includes(name))){
         await handlePullRequest(pullRequest, { eventPayload, octokit });
       }
     }
