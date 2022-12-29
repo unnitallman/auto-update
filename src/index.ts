@@ -170,7 +170,7 @@ const run = async () => {
     );
 
     for (const pullRequest of pullRequests) {
-      if (skip_labels.length > 0 && !pullRequest.labels.some(({ name }) => skip_labels.includes(name))){
+      if (skip_labels.length > 0 && !pullRequest.labels.some(({ name }) => name && skip_labels.includes(name))){
         await handlePullRequest(pullRequest, { eventPayload, octokit });
       }
     }
